@@ -98,8 +98,6 @@ class ViewController: UIViewController {
             alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
             return self.present(alertVC, animated: true, completion: nil)
         }
-        //print(calculator.elements)
         calculator.result()
     }
 }
-
