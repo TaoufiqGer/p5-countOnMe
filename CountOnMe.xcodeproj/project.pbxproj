@@ -14,6 +14,7 @@
 		1FA43BDD224E569A00F565CB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FA43BDB224E569A00F565CB /* LaunchScreen.storyboard */; };
 		1FA43BE8224E569A00F565CB /* SimpleCalcTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA43BE7224E569A00F565CB /* SimpleCalcTests.swift */; };
 		1FA43BF3224E569A00F565CB /* SimpleCalcUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA43BF2224E569A00F565CB /* SimpleCalcUITests.swift */; };
+		65232C6D26D6983800863BF7 /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65232C6C26D6983800863BF7 /* Calculator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		1FA43BEE224E569A00F565CB /* CountOnMeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CountOnMeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FA43BF2224E569A00F565CB /* SimpleCalcUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleCalcUITests.swift; sourceTree = "<group>"; };
 		1FA43BF4224E569A00F565CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		65232C6C26D6983800863BF7 /* Calculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,9 +99,10 @@
 		1FA43BD1224E569900F565CB /* CountOnMe */ = {
 			isa = PBXGroup;
 			children = (
+				65B2023D26D1B9540095737B /* Controller */,
+				65B2023C26D1B94C0095737B /* Vue */,
+				65B2023B26D1B9430095737B /* Model */,
 				1FA43BD2224E569900F565CB /* AppDelegate.swift */,
-				1FA43BD4224E569900F565CB /* ViewController.swift */,
-				1FA43BD6224E569900F565CB /* Main.storyboard */,
 				1FA43BD9224E569A00F565CB /* Assets.xcassets */,
 				1FA43BDB224E569A00F565CB /* LaunchScreen.storyboard */,
 				1FA43BDE224E569A00F565CB /* Info.plist */,
@@ -123,6 +126,30 @@
 				1FA43BF4224E569A00F565CB /* Info.plist */,
 			);
 			path = CountOnMeUITests;
+			sourceTree = "<group>";
+		};
+		65B2023B26D1B9430095737B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				65232C6C26D6983800863BF7 /* Calculator.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		65B2023C26D1B94C0095737B /* Vue */ = {
+			isa = PBXGroup;
+			children = (
+				1FA43BD6224E569900F565CB /* Main.storyboard */,
+			);
+			path = Vue;
+			sourceTree = "<group>";
+		};
+		65B2023D26D1B9540095737B /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				1FA43BD4224E569900F565CB /* ViewController.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,6 +285,7 @@
 			files = (
 				1FA43BD5224E569900F565CB /* ViewController.swift in Sources */,
 				1FA43BD3224E569900F565CB /* AppDelegate.swift in Sources */,
+				65232C6D26D6983800863BF7 /* Calculator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
