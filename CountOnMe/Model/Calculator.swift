@@ -68,8 +68,5 @@ class Calculator {
         }
         
         inputString.append(" = \(operationsToReduce.first!)")
-        /*print(inputString)
-        print(elements)
-        print(operationsToReduce)*/
     }
 }
