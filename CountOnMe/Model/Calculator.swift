@@ -22,6 +22,8 @@ class Calculator {
     
     // Error check computed variables
     var expressionIsCorrect: Bool {
+        // tu peux stocker les différents opérateur dans un tableau. Ca sera peut être mieux pour travailler dessus.
+
         return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != "/"
     }
     
@@ -30,6 +32,7 @@ class Calculator {
     }
     
     var canAddOperator: Bool {
+        // attention code similaire à expressionIsCorrect. A voir si on ne peut pas mutualiser
         return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != "/"
     }
     
@@ -43,6 +46,9 @@ class Calculator {
         NotificationCenter.default.post(notification)
     }
     
+    
+    // A voir quand tu feras tes tests mais de ce que je vois tu as un problème de priorité.
+    // Si tu fait 1 + 2 * 3 ça va te donner 9 alors que la bonne réponse c'est 7
     func result() {
         
         // Create local copy of operations
@@ -59,7 +65,7 @@ class Calculator {
             case "+": result = left + right
             case "-": result = left - right
             case "x": result = left * right
-            case "/": result = left / right
+            case "/": result = left / right // si right == 0 il se passe quoi ? --> à voir dans les tests
             default: fatalError("Unknown operator !")
             }
             

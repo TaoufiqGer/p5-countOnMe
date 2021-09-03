@@ -9,6 +9,7 @@
 import UIKit
 
 class ViewController: UIViewController {
+    // Une textview te permet d'être sur plusieurs ligne. On pourrait imaginer faire un saut de ligne à chaque nouvelle opération ?
     @IBOutlet weak var textView: UITextView!
     @IBOutlet var numberButtons: [UIButton]!
     
@@ -25,6 +26,8 @@ class ViewController: UIViewController {
         if textView.text == "0" {
             textView.text = ""
         }
+        
+        // pas très claire
         if calculator.expressionHaveResult {
             textView.text.append(calculator.elements[calculator.elements.count - 2])
             textView.text.append(calculator.elements.last!)
@@ -35,10 +38,12 @@ class ViewController: UIViewController {
     
     // View actions
     @IBAction func tappedNumberButton(_ sender: UIButton) {
+        // pourquoi cette vérif ?
         guard let numberText = sender.title(for: .normal) else {
             return
         }
         
+        // mettre un commentaire pour expliquer qu'on clear l'affichage pour refaire un nouveau calcul
         if calculator.expressionHaveResult {
             calculator.inputString = ""
         }
@@ -48,8 +53,13 @@ class ViewController: UIViewController {
     
     @IBAction func tappedAdditionButton(_ sender: UIButton) {
         if calculator.canAddOperator {
+            // pourquoi ne pas laisser le model ajouter le + ?
+            // le controller ferait juste : calcultor.addAddition()
+            // à voir si c'est vraiment pertinent
             calculator.inputString.append(" + ")
         } else {
+            // à voir si il faut mettre en anglais ou pas ?
+            // faire une fonction pour cette affichage d'alert afin d'avoir le code qu'une seule fois au lieu de 4
             let alertVC = UIAlertController(title: "Zéro!", message: "Un operateur est déja mis !", preferredStyle: .alert)
             alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
             self.present(alertVC, animated: true, completion: nil)
