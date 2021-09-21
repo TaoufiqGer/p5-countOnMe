@@ -100,4 +100,10 @@ class ViewController: UIViewController {
         }
         calculator.result()
     }
+    
+    
+    @IBAction func tappedACButton(_ sender: UIButton) {
+        textView.text = "0"
+        calculator.inputString = "0"
+    }
 }
