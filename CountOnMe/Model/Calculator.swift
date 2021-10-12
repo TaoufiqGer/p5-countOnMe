@@ -10,65 +10,82 @@ import Foundation
 
 class Calculator {
     
+    /// input that user enter using the keyboard
     var inputString: String = "" {
         didSet {
             refresh()
         }
     }
     
+    ///  elements of inputstring after being splited
     var elements: [String] {
         return inputString.split(separator: " ").map { "\($0)" }
     }
     
-    // Error check computed variables
-    var expressionIsCorrect: Bool {
-        // tu peux stocker les différents opérateur dans un tableau. Ca sera peut être mieux pour travailler dessus.
-
-        return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != "/"
+    /// Error check computed variables
+    var expressionIsComplete: Bool {
+        
+        if inputString.firstIndex(of: "/") != nil && expressionHasResult && elements.last == "0" {
+            return false
+        } else {
+            return elements.count >= 3
+        }
     }
     
-    var expressionHaveEnoughElement: Bool {
-        return elements.count >= 3
-    }
-    
+    /// checks if an operator already exists
     var canAddOperator: Bool {
-        // attention code similaire à expressionIsCorrect. A voir si on ne peut pas mutualiser
         return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != "/"
     }
     
-    var expressionHaveResult: Bool {
-        return inputString.firstIndex(of: "=") != nil
+    /// Checks if the inputString has an "=" symbol
+    var expressionHasResult: Bool {
+            return inputString.firstIndex(of: "=") != nil
     }
     
+    /// sends a notification to update the display
     func refresh() {
         let notificationName = Notification.Name(rawValue: "DisplayChanged")
         let notification = Notification(name: notificationName)
         NotificationCenter.default.post(notification)
     }
     
+    /// adds + sign to inputString
+    func addAddition() {
+        inputString.append(" + ")
+    }
     
-    // A voir quand tu feras tes tests mais de ce que je vois tu as un problème de priorité.
-    // Si tu fait 1 + 2 * 3 ça va te donner 9 alors que la bonne réponse c'est 7
+    func addSubstraction() {
+        inputString.append(" - ")
+    }
+    
+    func addMultiplication() {
+        inputString.append(" x ")
+    }
+    
+    func addDivision() {
+        inputString.append(" / ")
+    }
+    
     func result() {
         
-        // Create local copy of operations
+        /// Create local copy of operations
         var operationsToReduce = elements
         
-        // Iterate over operations while an operand still here
+        /// Iterate over operations while an operand still here
         while operationsToReduce.count > 1 {
             let left = Float(operationsToReduce[0])!
             let operand = operationsToReduce[1]
             let right = Float(operationsToReduce[2])!
             
             let result: String
-            switch operand {
-            case "+": result = String(Int(left + right))
-            case "-": result = String(Int(left - right))
-            case "x": result = String(Int(left * right))
-            case "/": result = String(left / right)
-            default: fatalError("Unknown operator !")
-            }
             
+            switch operand {
+                case "+": result = String(Int(left + right))
+                case "-": result = String(Int(left - right))
+                case "x": result = String(Int(left * right))
+                case "/": result = String(left / right)
+                default: return
+            }
             operationsToReduce = Array(operationsToReduce.dropFirst(3))
             operationsToReduce.insert(result, at: 0)
         }

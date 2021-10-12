@@ -9,7 +9,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-    // Une textview te permet d'être sur plusieurs ligne. On pourrait imaginer faire un saut de ligne à chaque nouvelle opération ?
+
     @IBOutlet weak var textView: UITextView!
     @IBOutlet var numberButtons: [UIButton]!
     
@@ -22,96 +22,95 @@ class ViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(displayChanged), name: displayChangedNotification, object: nil)
     }
     
+    // Updates the display
     @objc func displayChanged() {
         if textView.text == "0" {
             textView.text = ""
         }
         
-        // pas très claire
-        if calculator.expressionHaveResult {
+        if calculator.expressionHasResult {
             textView.text.append(calculator.elements[calculator.elements.count - 2])
-            textView.text.append(calculator.elements.last!)
+            textView.text.append(calculator.elements.last ?? "")
         } else {
-            textView.text.append(calculator.elements.last!.last!)
+            if let lastCharacter = calculator.elements.last?.last {
+                textView.text.append(lastCharacter)
+            }
         }
+        
     }
     
     // View actions
     @IBAction func tappedNumberButton(_ sender: UIButton) {
-        // pourquoi cette vérif ?
-        guard let numberText = sender.title(for: .normal) else {
+        /*guard let numberText = sender.title(for: .normal) else {
             return
-        }
+        }*/
         
-        // mettre un commentaire pour expliquer qu'on clear l'affichage pour refaire un nouveau calcul
-        if calculator.expressionHaveResult {
+        let numberText = sender.title(for: .normal)!
+        // clear display for a new operation
+        if calculator.expressionHasResult {
             calculator.inputString = ""
         }
         
         calculator.inputString.append(numberText)
     }
     
+    /// add addition sign in the model
     @IBAction func tappedAdditionButton(_ sender: UIButton) {
         if calculator.canAddOperator {
-            // pourquoi ne pas laisser le model ajouter le + ?
-            // le controller ferait juste : calcultor.addAddition()
-            // à voir si c'est vraiment pertinent
-            calculator.inputString.append(" + ")
+            calculator.addAddition()
         } else {
-            // à voir si il faut mettre en anglais ou pas ?
-            // faire une fonction pour cette affichage d'alert afin d'avoir le code qu'une seule fois au lieu de 4
-            let alertVC = UIAlertController(title: "Zéro!", message: "Un operateur est déja mis !", preferredStyle: .alert)
+
+            let alertVC = UIAlertController(title: "Error!", message: "An operator is already entered!", preferredStyle: .alert)
             alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
             self.present(alertVC, animated: true, completion: nil)
         }
     }
     
+    /// add substraction sign in the model
     @IBAction func tappedSubstractionButton(_ sender: UIButton) {
         if calculator.canAddOperator {
-            calculator.inputString.append(" - ")
+            calculator.addSubstraction()
         } else {
-            let alertVC = UIAlertController(title: "Zéro!", message: "Un operateur est déja mis !", preferredStyle: .alert)
+            let alertVC = UIAlertController(title: "Error!", message: "An operator is already entered!", preferredStyle: .alert)
             alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
             self.present(alertVC, animated: true, completion: nil)
         }
     }
-
+    
+    /// add multiplication sign in the model
     @IBAction func tappedMultiplicationButton(_ sender: UIButton) {
         if calculator.canAddOperator {
-            calculator.inputString.append(" x ")
+            calculator.addMultiplication()
         } else {
-            let alertVC = UIAlertController(title: "Zéro!", message: "Un operateur est déja mis !", preferredStyle: .alert)
+            let alertVC = UIAlertController(title: "Error!", message: "An operator is already entered!", preferredStyle: .alert)
             alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
             self.present(alertVC, animated: true, completion: nil)
         }
     }
     
+    /// add division sign in the model
     @IBAction func tappedDivisionButton(_ sender: UIButton) {
         if calculator.canAddOperator {
-            calculator.inputString.append(" / ")
+            calculator.addDivision()
         } else {
-            let alertVC = UIAlertController(title: "Zéro!", message: "Un operateur est déja mis !", preferredStyle: .alert)
+            let alertVC = UIAlertController(title: "Error!", message: "An operator is already entered!", preferredStyle: .alert)
             alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
             self.present(alertVC, animated: true, completion: nil)
         }
     }
     
+    /// verify if the expression is correct then procede to calculation
     @IBAction func tappedEqualButton(_ sender: UIButton) {
-        guard calculator.expressionIsCorrect else {
-            let alertVC = UIAlertController(title: "Zéro!", message: "Entrez une expression correcte !", preferredStyle: .alert)
+        guard calculator.expressionIsComplete else {
+            let alertVC = UIAlertController(title: "Error!", message: "Enter a correct expression!", preferredStyle: .alert)
             alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
             return self.present(alertVC, animated: true, completion: nil)
-        }
-        
-        guard calculator.expressionHaveEnoughElement else {
-            let alertVC = UIAlertController(title: "Zéro!", message: "Démarrez un nouveau calcul !", preferredStyle: .alert)
-            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            return self.present(alertVC, animated: true, completion: nil)
+            
         }
         calculator.result()
     }
     
-    
+    /// clear the display and set inputring in the model to 0
     @IBAction func tappedACButton(_ sender: UIButton) {
         textView.text = "0"
         calculator.inputString = "0"
