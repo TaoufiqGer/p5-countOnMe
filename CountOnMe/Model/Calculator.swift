@@ -32,6 +32,13 @@ class Calculator {
         }
     }
     
+    var denominatorIsZero: Bool {
+        if elements[1] == "/" && elements[2] == "0" {
+            return true
+        }
+        return false
+    }
+    
     /// checks if an operator already exists
     var canAddOperator: Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != "/"
@@ -73,25 +80,29 @@ class Calculator {
         
         /// Iterate over operations while an operand still here
         while operationsToReduce.count > 1 {
-            let left = Float(operationsToReduce[0])!
+            let left = Double(operationsToReduce[0])!
             let operand = operationsToReduce[1]
-            let right = Float(operationsToReduce[2])!
+            let right = Double(operationsToReduce[2])!
             
             let result: String
             
             switch operand {
-                case "+": result = String(Int(left + right))
-                case "-": result = String(Int(left - right))
-                case "x": result = String(Int(left * right))
-                case "/": result = String(left / right)
+                case "+": result = String(Double(left + right))
+                case "-": result = String(Double(left - right))
+                case "x": result = String(Double(left * right))
+                case "/":
+                    if right == 0 {
+                        result = " = Math Error"
+                    } else {
+                        result = String(Double(left / right))
+                    }
                 default: return
             }
             operationsToReduce = Array(operationsToReduce.dropFirst(3))
             operationsToReduce.insert(result, at: 0)
         }
-        
         inputString.append(" = \(operationsToReduce.first!)")
+                
         
-        print(elements)
     }
 }

@@ -107,6 +107,11 @@ class ViewController: UIViewController {
             return self.present(alertVC, animated: true, completion: nil)
             
         }
+        if calculator.denominatorIsZero {
+            let alertVC = UIAlertController(title: "Math Error!", message: "Division by zero is not allowed!", preferredStyle: .alert)
+            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            return self.present(alertVC, animated: true, completion: nil)
+        }
         calculator.result()
     }
     
