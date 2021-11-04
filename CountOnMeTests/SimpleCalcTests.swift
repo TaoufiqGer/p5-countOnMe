@@ -25,35 +25,80 @@ class SimpleCalcTests: XCTestCase {
         calculator.inputString = "3 + 2"
         calculator.result()
         XCTAssertEqual(calculator.elements.last!, "5")
+        
+        calculator.inputString = "10000000 + 500000"
+        calculator.result()
+        XCTAssertEqual(calculator.elements.last!, "10500000")
     }
     
     func testGivenExpIsSubstraction_WhenEqualButtonIspressed_ThenResultisPrinted() {
         calculator.inputString = "3 - 2"
         calculator.result()
         XCTAssert(calculator.elements.last! == "1")
+        
         calculator.inputString = "2 - 4"
         calculator.result()
         XCTAssert(calculator.elements.last! == "-2")
+        
+        calculator.inputString = "10000000 - 500000"
+        calculator.result()
+        XCTAssertEqual(calculator.elements.last!, "9500000")
     }
     
     func testGivenExpIsMultiplication_WhenEqualButtonIspressed_ThenResultisPrinted() {
         calculator.inputString = "5 x 2"
         calculator.result()
         XCTAssert(calculator.elements.last == "10")
+        
+        calculator.inputString = "100000000 x 2"
+        calculator.result()
+        XCTAssert(calculator.elements.last == "200000000")
     }
     
     func testGivenExpIsDivision_WhenEqualButtonIsPressed_ThenResultisPrinted() {
         calculator.inputString = "30 / 2"
         calculator.result()
-        XCTAssert(calculator.elements.last == "15.0")
+        XCTAssert(calculator.elements.last == "15")
+        
         calculator.inputString = "1 / 2"
         calculator.result()
         XCTAssert(calculator.elements.last == "0.5")
-        calculator.inputString = "5 / 0"
+        
+        calculator.inputString = "1 / 3"
         calculator.result()
+        XCTAssert(calculator.elements.last == "0.333")
     }
     
-    func testGiven_When_Then() {
+    func testGivenDenominatorIsZero_WhenEqualButtonIsPressed_ThenResultisPrinted() {
+        calculator.inputString = "2 / 0"
+        XCTAssertTrue(calculator.denominatorIsZero)
+        
+        calculator.inputString = "2 +"
+        XCTAssertFalse(calculator.denominatorIsZero)
+        
+        calculator.inputString = "2 / 3"
+        XCTAssertFalse(calculator.denominatorIsZero)
+        
+        calculator.inputString = "2 + 2 / 0"
+        XCTAssertTrue(calculator.denominatorIsZero)
+    }
+    
+    func testGivenHasMultipleOperations_WhenEqualButtonIsPressed_ThenResultisPrinted() {
+        calculator.inputString = "1 + 3 x 2"
+        calculator.result()
+        XCTAssert(calculator.elements.last == "7")
+        calculator.inputString = "1 + 4 / 2"
+        calculator.result()
+        XCTAssert(calculator.elements.last == "3")
+        calculator.inputString = "3 + 4 x 8 / 2"
+        calculator.result()
+        XCTAssert(calculator.elements.last == "19")
+        calculator.inputString = "1 + 2 x 3 / 3 x 2"
+        calculator.result()
+        XCTAssertEqual(calculator.elements.last, "5")
+        calculator.inputString = "10 + 3 x 45 + 100 / 5"
+        calculator.result()
+        XCTAssertEqual(calculator.elements.last, "165")
     }
     
     func testGivenHasNoOperation_WhenAdditionButtonIsPressed_ThenPlusSignShouldBeAdded() {
@@ -82,11 +127,12 @@ class SimpleCalcTests: XCTestCase {
     
     func testGivenExpressionIsComplete_WhanEqualButtonIsPressed_ThenResultShouldBePrinted() {
         calculator.inputString = "1 + 1 ="
-        XCTAssertTrue(calculator.expressionIsComplete)
+        XCTAssertTrue(calculator.lastElementIsOperator)
     }
 
     func testGivenHasOperation_WhenOperandButtonIsPressed_ThenErrorShouldBeDisplayed() {
         calculator.inputString = "1 +"
-        XCTAssertFalse(calculator.canAddOperator)
+        XCTAssertFalse(calculator.lastElementIsOperator)
     }
+    
 }
